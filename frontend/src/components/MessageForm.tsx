@@ -11,48 +11,35 @@ const MessageForm = () => {
   const [time, setTime] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    if (time) {
-      // ✅ Parse the input time as a local date
-      const localDate = new Date(time); // Assuming time is a valid ISO string or compatible format
-
-      // ✅ Convert to UTC by adjusting for the local timezone offset
-      const utcDate = new Date(
-        localDate.getTime() - localDate.getTimezoneOffset() * 60000
-      );
-
-      // Ensure the date is valid
-      if (isNaN(utcDate.getTime())) {
-        throw new Error("Invalid date");
+    try {
+      if (time) {
+        const res = await api.post("/schedule", {
+          teamId,
+          channel,
+          message,
+          time,
+        });
+        alert(res.data || "✅ Message scheduled!");
+      } else {
+        const res = await api.post("/send-message", {
+          teamId,
+          channel,
+          text: message,
+        });
+        alert(res.data || "✅ Message sent!");
       }
 
-      const res = await api.post("/schedule", {
-        teamId,
-        channel,
-        message,
-        time: utcDate.toISOString(), // Send as UTC ISO string
-      });
-      alert(res.data || "✅ Message scheduled!");
-    } else {
-      const res = await api.post("/send-message", {
-        teamId,
-        channel,
-        text: message,
-      });
-      alert(res.data || "✅ Message sent!");
+      setTeamId("");
+      setChannel("");
+      setMessage("");
+      setTime("");
+    } catch (err: any) {
+      console.error(err);
+      alert("❌ Failed to send message");
     }
-
-    setTeamId("");
-    setChannel("");
-    setMessage("");
-    setTime("");
-  } catch (err: any) {
-    console.error(err);
-    alert("❌ Failed to send message");
-  }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit}>
