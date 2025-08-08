@@ -1,18 +1,10 @@
-// import axios from "axios";
-
-// const api = axios.create({
-//   baseURL: "http://localhost:5000/api/slack", // ✅ Adjust if needed
-//   withCredentials: true,
-// });
-
-// export default api;
-
-// File: src/utils/api.ts
-
 import axios from "axios";
 
+// Access the env variable
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 const api = axios.create({
-  baseURL: "http://localhost:5000/api/slack",
+  baseURL, // same as baseURL: baseURL
   withCredentials: true,
 });
 
