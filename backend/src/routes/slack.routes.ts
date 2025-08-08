@@ -52,7 +52,7 @@ router.post("/schedule", async (req, res) => {
     const scheduledTime = new Date(time); // what you sent from frontend
 
     // ⏳ Subtract 5.5 hours (in ms)
-    scheduledTime.setHours(scheduledTime.getHours() - 5.5);
+    scheduledTime.setTime(scheduledTime.getTime() - (5 * 60 * 60 * 1000 + 30 * 60 * 1000));
 
     const newMessage = new ScheduledMessage({
       teamId,
