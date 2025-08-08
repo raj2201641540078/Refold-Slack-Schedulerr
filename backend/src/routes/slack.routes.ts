@@ -76,9 +76,16 @@ router.delete("/schedule/:id", async (req, res) => {
 // === Check if Slack is connected ===
 router.get("/check-auth", async (req, res) => {
   try {
-    const user = await SlackUser.findOne({});
+    const { teamId } = req.query;
+
+    if (!teamId) {
+      return res.json({ connected: false });
+    }
+
+    const user = await SlackUser.findOne({ teamId });
     res.json({ connected: !!user });
   } catch (err) {
+    console.error("Error checking auth:", err);
     res.status(500).json({ connected: false, error: "Error checking auth" });
   }
 });
