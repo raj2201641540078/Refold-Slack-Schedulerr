@@ -15,11 +15,17 @@ const MessageForm = () => {
 
     try {
       if (time) {
+        // ✅ Convert local time (IST) to UTC before sending
+        const localDate = new Date(time); // this is local
+        const utcDate = new Date(
+          localDate.getTime() - localDate.getTimezoneOffset() * 60000
+        );
+
         const res = await api.post("/schedule", {
           teamId,
           channel,
           message,
-          time,
+          time: utcDate.toISOString(), // send as UTC ISO string
         });
         alert(res.data || "✅ Message scheduled!");
       } else {
