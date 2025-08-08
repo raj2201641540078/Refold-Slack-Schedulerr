@@ -17,13 +17,16 @@ dotenv.config();
 const app = express();
 
 // === CORS Middleware ===
-app.use(cors({
-  origin: [
-       // your deployed frontend
-      "http://localhost:3000" // keep for local testing
-    ], // ✅ Allow frontend origin
-  credentials: true                // ✅ Allow credentials (cookies, headers)
-}));
+app.use(
+  cors({
+    origin: [
+      "https://refold-slack-schedulerr.vercel.app", // deployed frontend
+      "http://localhost:3000" // local frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 
 // === Body parser ===
 app.use(express.json());
