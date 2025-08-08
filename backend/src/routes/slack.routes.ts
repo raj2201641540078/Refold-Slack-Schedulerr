@@ -45,27 +45,11 @@ router.post("/send-message", async (req, res) => {
 router.post("/schedule", async (req, res) => {
   const { teamId, channel, message, time } = req.body;
 
-  const user = await SlackUser.findOne({ teamId });
-  if (!user) return res.status(404).send("User not found.");
-
   try {
-    const scheduledTime = new Date(time); // what you sent from frontend
-
-    // ⏳ Subtract 5.5 hours (in ms)
-    scheduledTime.setTime(scheduledTime.getTime() - (5 * 60 * 60 * 1000 + 30 * 60 * 1000));
-
-    const newMessage = new ScheduledMessage({
-      teamId,
-      channel,
-      message,
-      time: scheduledTime,
-    });
-
-    await newMessage.save();
-    res.send("✅ Message scheduled!");
-  } catch (err) {
-    console.error("❌ Error scheduling message:", err);
-    res.status(500).send("Failed to schedule message.");
+    await ScheduledMessage.create({ teamId, channel, message, time });
+    res.send("✅ Message scheduled");
+  } catch (error) {
+    res.status(500).send("❌ Failed to schedule message");
   }
 });
 
