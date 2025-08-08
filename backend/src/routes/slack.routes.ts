@@ -14,11 +14,8 @@ router.get("/oauth/callback", handleOAuthCallback);
 router.post("/send-message", async (req, res) => {
   const { teamId, channel, text } = req.body;
 
-  // Check if workspace has authorized your app
   const user = await SlackUser.findOne({ teamId });
-  if (!user) {
-    return res.status(404).send("This workspace is not connected. Please connect via Slack OAuth first.");
-  }
+  if (!user) return res.status(404).send("User not found.");
 
   try {
     const result = await axios.post(
@@ -26,7 +23,7 @@ router.post("/send-message", async (req, res) => {
       { channel, text },
       {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`, // token for THIS workspace
+          Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": "application/json",
         },
       }
@@ -38,12 +35,23 @@ router.post("/send-message", async (req, res) => {
     }
 
     res.send("✅ Message sent!");
-  } catch (err) {
-    console.error("❌ Slack message error:");
+  } catch (err: any) {
+    console.error("❌ Slack message error:", err.response?.data || err.message);
     res.status(500).send("Failed to send message.");
   }
 });
 
+// === Schedule a Message ===
+router.post("/schedule", async (req, res) => {
+  const { teamId, channel, message, time } = req.body;
+
+  try {
+    await ScheduledMessage.create({ teamId, channel, message, time });
+    res.send("✅ Message scheduled");
+  } catch (error) {
+    res.status(500).send("❌ Failed to schedule message");
+  }
+});
 
 // ✅ === List All Scheduled Messages (sent + pending) ===
 router.get("/schedule", async (req, res) => {

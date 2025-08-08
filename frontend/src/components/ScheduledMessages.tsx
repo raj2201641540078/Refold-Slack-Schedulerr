@@ -5,20 +5,14 @@ import api from "../utils/api";
 import { ScheduledMessage } from "../types";
 import "../App.css"; // Ensure global styles apply
 
-interface ScheduledMessagesProps {
-  teamId: string | null;
-}
-
-const ScheduledMessages = ({ teamId }: ScheduledMessagesProps) => {
+const ScheduledMessages = () => {
   const [messages, setMessages] = useState<ScheduledMessage[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMessages = async () => {
     try {
-      const res = await api.get("/schedule", {
-        params: { teamId }, // Pass teamId to backend if required
-      });
-
+      const res = await api.get("/schedule");
+      // Optional: sort by time ascending
       const sorted = res.data.sort(
         (a: ScheduledMessage, b: ScheduledMessage) =>
           new Date(a.time).getTime() - new Date(b.time).getTime()
@@ -33,9 +27,8 @@ const ScheduledMessages = ({ teamId }: ScheduledMessagesProps) => {
 
   const cancelMessage = async (id: string) => {
     try {
-      await api.delete(`/schedule/${id}`, {
-        params: { teamId }, // Pass teamId for correct workspace
-      });
+      await api.delete(`/schedule/${id}`);
+      // Refetch instead of manually filtering
       await fetchMessages();
       alert("✅ Message canceled!");
     } catch (err: any) {
@@ -45,10 +38,8 @@ const ScheduledMessages = ({ teamId }: ScheduledMessagesProps) => {
   };
 
   useEffect(() => {
-    if (teamId) {
-      fetchMessages();
-    }
-  }, [teamId]);
+    fetchMessages();
+  }, []);
 
   return (
     <div>
@@ -72,16 +63,9 @@ const ScheduledMessages = ({ teamId }: ScheduledMessagesProps) => {
                 boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
               }}
             >
-              <p>
-                <strong>📺 Channel:</strong> {msg.channel}
-              </p>
-              <p>
-                <strong>💬 Message:</strong> {msg.message}
-              </p>
-              <p>
-                <strong>⏰ Time:</strong>{" "}
-                {new Date(msg.time).toLocaleString()}
-              </p>
+              <p><strong>📺 Channel:</strong> {msg.channel}</p>
+              <p><strong>💬 Message:</strong> {msg.message}</p>
+              <p><strong>⏰ Time:</strong> {new Date(msg.time).toLocaleString()}</p>
               <p>
                 <strong>📦 Status:</strong>{" "}
                 {msg.sent ? "✅ Sent" : "🕒 Pending"}
@@ -102,10 +86,12 @@ const ScheduledMessages = ({ teamId }: ScheduledMessagesProps) => {
                     transition: "all 0.3s ease",
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#c82333";
+                    const btn = e.currentTarget;
+                    btn.style.backgroundColor = "#c82333";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "#dc3545";
+                    const btn = e.currentTarget;
+                    btn.style.backgroundColor = "#dc3545";
                   }}
                 >
                   ❌ Cancel

@@ -2,14 +2,10 @@
 
 import { useState } from "react";
 import api from "../utils/api";
-import "../App.css";
+import "../App.css"; // Ensure global styles apply
 
-interface MessageFormProps {
-  teamId?: string | null; // now optional
-}
-
-const MessageForm: React.FC<MessageFormProps> = ({ teamId: propTeamId }) => {
-  const [teamId, setTeamId] = useState(propTeamId || "");
+const MessageForm = () => {
+  const [teamId, setTeamId] = useState("");
   const [channel, setChannel] = useState("");
   const [message, setMessage] = useState("");
   const [time, setTime] = useState("");
@@ -18,25 +14,23 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId: propTeamId }) => {
     e.preventDefault();
 
     try {
-      const finalTeamId = teamId || propTeamId;
-      if (!finalTeamId) {
-        alert("❌ Team ID is required");
-        return;
-      }
-
       if (time) {
+        // Parse the datetime-local string (YYYY-MM-DDTHH:MM) into local Date
         const [datePart, timePart] = time.split("T");
         const [year, month, day] = datePart.split("-").map((n) => Number(n));
         const [hour, minute] = timePart.split(":").map((n) => Number(n));
 
+        // Construct a Date using local timezone (monthIndex = month - 1)
         const localDate = new Date(year, month - 1, day, hour, minute, 0, 0);
 
+        // Validate
         if (isNaN(localDate.getTime())) {
           throw new Error("Invalid date");
         }
 
+        // Send the exact local time as an ISO string (backend will get the correct instant)
         const res = await api.post("/schedule", {
-          teamId: finalTeamId,
+          teamId,
           channel,
           message,
           time: localDate.toISOString(),
@@ -44,13 +38,14 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId: propTeamId }) => {
         alert(res.data || "✅ Message scheduled!");
       } else {
         const res = await api.post("/send-message", {
-          teamId: finalTeamId,
+          teamId,
           channel,
           text: message,
         });
         alert(res.data || "✅ Message sent!");
       }
 
+      setTeamId("");
       setChannel("");
       setMessage("");
       setTime("");
@@ -68,7 +63,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId: propTeamId }) => {
       <input
         value={teamId}
         onChange={(e) => setTeamId(e.target.value)}
-        placeholder="Enter the Team ID"
+        placeholder="Enter your Team ID"
         required
       />
 
