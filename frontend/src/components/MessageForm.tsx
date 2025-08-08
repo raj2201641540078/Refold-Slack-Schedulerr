@@ -11,41 +11,48 @@ const MessageForm = () => {
   const [time, setTime] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      if (time) {
-        // ✅ Convert local time (IST) to UTC before sending
-        const localDate = new Date(time); // this is local
-        const utcDate = new Date(
-          localDate.getTime() - localDate.getTimezoneOffset() * 60000
-        );
+  try {
+    if (time) {
+      // ✅ Parse the input time as a local date
+      const localDate = new Date(time); // Assuming time is a valid ISO string or compatible format
 
-        const res = await api.post("/schedule", {
-          teamId,
-          channel,
-          message,
-          time: utcDate.toISOString(), // send as UTC ISO string
-        });
-        alert(res.data || "✅ Message scheduled!");
-      } else {
-        const res = await api.post("/send-message", {
-          teamId,
-          channel,
-          text: message,
-        });
-        alert(res.data || "✅ Message sent!");
+      // ✅ Convert to UTC by adjusting for the local timezone offset
+      const utcDate = new Date(
+        localDate.getTime() - localDate.getTimezoneOffset() * 60000
+      );
+
+      // Ensure the date is valid
+      if (isNaN(utcDate.getTime())) {
+        throw new Error("Invalid date");
       }
 
-      setTeamId("");
-      setChannel("");
-      setMessage("");
-      setTime("");
-    } catch (err: any) {
-      console.error(err);
-      alert("❌ Failed to send message");
+      const res = await api.post("/schedule", {
+        teamId,
+        channel,
+        message,
+        time: utcDate.toISOString(), // Send as UTC ISO string
+      });
+      alert(res.data || "✅ Message scheduled!");
+    } else {
+      const res = await api.post("/send-message", {
+        teamId,
+        channel,
+        text: message,
+      });
+      alert(res.data || "✅ Message sent!");
     }
-  };
+
+    setTeamId("");
+    setChannel("");
+    setMessage("");
+    setTime("");
+  } catch (err: any) {
+    console.error(err);
+    alert("❌ Failed to send message");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit}>
