@@ -19,7 +19,7 @@ const app = express();
 // === CORS Middleware ===
 app.use(cors({
   origin: [
-      "https://<your-frontend-vercel-url>.vercel.app", // your deployed frontend
+      "https://refold-slack-schedulerr.vercel.app", // your deployed frontend
       "http://localhost:3000" // keep for local testing
     ], // ✅ Allow frontend origin
   credentials: true                // ✅ Allow credentials (cookies, headers)
