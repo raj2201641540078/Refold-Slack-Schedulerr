@@ -11,13 +11,18 @@ function App() {
 
   useEffect(() => {
   const params = new URLSearchParams(window.location.search);
-  const teamId = params.get("team_id");
+  const teamId = params.get("teamId");
+
+  if (!teamId) {
+    setIsConnected(false);
+    return;
+  }
 
   axios
     .get(`${API_BASE_URL}/check-auth`, { params: { teamId } })
     .then((res) => setIsConnected(res.data.connected))
     .catch(() => setIsConnected(false));
-}, [window.location.search]);
+}, []);
 
 const handleConnect = () => {
   window.location.href = `${API_BASE_URL}/oauth`;
