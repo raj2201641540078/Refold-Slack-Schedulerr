@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import api from "../utils/api";
-import "../App.css"; // Ensure global styles apply
+import "../App.css";
 
 interface MessageFormProps {
-  teamId: string | null;
+  teamId?: string | null; // now optional
 }
 
-const MessageForm: React.FC<MessageFormProps> = ({ teamId }) => {
+const MessageForm: React.FC<MessageFormProps> = ({ teamId: propTeamId }) => {
+  const [teamId, setTeamId] = useState(propTeamId || "");
   const [channel, setChannel] = useState("");
   const [message, setMessage] = useState("");
   const [time, setTime] = useState("");
@@ -17,6 +18,12 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId }) => {
     e.preventDefault();
 
     try {
+      const finalTeamId = teamId || propTeamId;
+      if (!finalTeamId) {
+        alert("❌ Team ID is required");
+        return;
+      }
+
       if (time) {
         const [datePart, timePart] = time.split("T");
         const [year, month, day] = datePart.split("-").map((n) => Number(n));
@@ -29,7 +36,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId }) => {
         }
 
         const res = await api.post("/schedule", {
-          teamId,
+          teamId: finalTeamId,
           channel,
           message,
           time: localDate.toISOString(),
@@ -37,7 +44,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId }) => {
         alert(res.data || "✅ Message scheduled!");
       } else {
         const res = await api.post("/send-message", {
-          teamId,
+          teamId: finalTeamId,
           channel,
           text: message,
         });
@@ -56,6 +63,14 @@ const MessageForm: React.FC<MessageFormProps> = ({ teamId }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2 className="scheduled-title">📤 Send Slack Message</h2>
+
+      <label>Team ID</label>
+      <input
+        value={teamId}
+        onChange={(e) => setTeamId(e.target.value)}
+        placeholder="Enter the Team ID"
+        required
+      />
 
       <label>Channel ID</label>
       <input
