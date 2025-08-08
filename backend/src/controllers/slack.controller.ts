@@ -25,7 +25,10 @@ export const startOAuth = (req: Request, res: Response) => {
     return res.status(500).send("Slack client ID or redirect URI not configured.");
   }
 
-  const slackOAuthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=chat:write,channels:read,users:read&redirect_uri=${redirectUri}`;
+  // Encode redirect URI for safety
+  const encodedRedirectUri = encodeURIComponent(redirectUri);
+
+  const slackOAuthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=chat:write,channels:read,users:read&redirect_uri=${encodedRedirectUri}`;
   
   console.log("🌐 Redirecting to Slack OAuth:", slackOAuthUrl);
   res.redirect(slackOAuthUrl);
