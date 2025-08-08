@@ -18,7 +18,10 @@ const app = express();
 
 // === CORS Middleware ===
 app.use(cors({
-  origin: "http://localhost:3000", // ✅ Allow frontend origin
+  origin: [
+      "https://<your-frontend-vercel-url>.vercel.app", // your deployed frontend
+      "http://localhost:3000" // keep for local testing
+    ], // ✅ Allow frontend origin
   credentials: true                // ✅ Allow credentials (cookies, headers)
 }));
 
