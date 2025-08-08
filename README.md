@@ -1,18 +1,23 @@
-
 ``` bash
 
-## Important
+
+## ⚠️ IMPORTANT
 
 Respected Sir/Madam, I have made the website and deployed also but it is working only for one specific team and channel id which is mine.  
-I am sorry not provided the exact website as expected from the assessment but here is my teamid: **T09987TJ8CU**  
-and channel id: **C099SEPBC9F**, and **refoldapp.slack.com** this is my Slack workspace, if you can then please test my website.  
-Thank you.  
-Deployed link: **https://refold-slack-schedulerr.vercel.app/**  
+I am sorry not provided the exact website as expected from the assessment but here is my -  
+ 
+
+- **Team ID:** `T09987TJ8CU`  
+- **Channel ID:** `C099SEPBC9F`  
+- **Slack Workspace:** [refoldapp.slack.com](https://refoldapp.slack.com) this is my Slack workspace,
+
+if you can then please test my website.
+
+**Deployed Link:** [https://refold-slack-schedulerr.vercel.app/](https://refold-slack-schedulerr.vercel.app/)  
 
 
-
+Thank you. 
 ```
-
 
 <h1 align="center">🕒 Refold Slack Scheduler</h1>
 
