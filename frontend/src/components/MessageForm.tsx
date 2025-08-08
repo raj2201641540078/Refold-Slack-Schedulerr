@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import api from "../utils/api";
-import "../App.css"; // Ensure global styles apply
+import "../App.css";
 
 const MessageForm = () => {
   const [teamId, setTeamId] = useState("");
@@ -15,12 +15,19 @@ const MessageForm = () => {
 
     try {
       if (time) {
-        // ⏳ Send the time exactly as provided in the form
+        // Convert to Date object as local time
+        const localDate = new Date(time);
+
+        // Adjust so backend stores exactly what user picked
+        const correctedDate = new Date(
+          localDate.getTime() - localDate.getTimezoneOffset() * 60000
+        );
+
         const res = await api.post("/schedule", {
           teamId,
           channel,
           message,
-          time, // no increase or decrease
+          time: correctedDate.toISOString(),
         });
         alert(res.data || "✅ Message scheduled!");
       } else {
