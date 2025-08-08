@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import api from "../utils/api";
-import "../App.css";
+import "../App.css"; // Ensure global styles apply
 
 const MessageForm = () => {
   const [teamId, setTeamId] = useState("");
@@ -15,19 +15,25 @@ const MessageForm = () => {
 
     try {
       if (time) {
-        // Convert to Date object as local time
-        const localDate = new Date(time);
+        // Parse the datetime-local string (YYYY-MM-DDTHH:MM) into local Date
+        const [datePart, timePart] = time.split("T");
+        const [year, month, day] = datePart.split("-").map((n) => Number(n));
+        const [hour, minute] = timePart.split(":").map((n) => Number(n));
 
-        // Adjust so backend stores exactly what user picked
-        const correctedDate = new Date(
-          localDate.getTime() - localDate.getTimezoneOffset() * 60000
-        );
+        // Construct a Date using local timezone (monthIndex = month - 1)
+        const localDate = new Date(year, month - 1, day, hour, minute, 0, 0);
 
+        // Validate
+        if (isNaN(localDate.getTime())) {
+          throw new Error("Invalid date");
+        }
+
+        // Send the exact local time as an ISO string (backend will get the correct instant)
         const res = await api.post("/schedule", {
           teamId,
           channel,
           message,
-          time: correctedDate.toISOString(),
+          time: localDate.toISOString(),
         });
         alert(res.data || "✅ Message scheduled!");
       } else {
