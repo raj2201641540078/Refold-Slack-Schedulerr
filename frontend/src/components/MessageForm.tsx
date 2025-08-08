@@ -15,16 +15,12 @@ const MessageForm = () => {
 
     try {
       if (time) {
-        // ⏳ Subtract 5 hours 30 minutes before sending
-        const adjustedTime = new Date(
-          new Date(time).getTime() - (5 * 60 * 60 * 1000 + 30 * 60 * 1000)
-        );
-
+        // ⏳ Send the time exactly as provided in the form
         const res = await api.post("/schedule", {
           teamId,
           channel,
           message,
-          time: adjustedTime.toISOString(), // send adjusted time
+          time, // no increase or decrease
         });
         alert(res.data || "✅ Message scheduled!");
       } else {
