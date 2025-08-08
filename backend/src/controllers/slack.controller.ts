@@ -49,7 +49,7 @@ export const handleOAuthCallback = async (req: Request, res: Response) => {
       },
     });
 
-    const { access_token, refresh_token, authed_user, team, ok, error } = response.data;
+    const { access_token, authed_user, team, ok, error } = response.data;
 
     if (!ok) {
       console.error("❌ Slack OAuth error:", error);
@@ -69,15 +69,11 @@ export const handleOAuthCallback = async (req: Request, res: Response) => {
       { upsert: true, new: true }
     );
 
-    console.log("✅ Slack Connected");
-    console.log("🔑 Access Token:", access_token);
-    console.log("🔄 Refresh Token:", refresh_token);
-    console.log("👥 Team:", team);
-    console.log("👤 Authed User:", authed_user);
+    console.log("✅ Slack Connected for team:", team.id);
 
-    // ✅ Redirect directly to frontend home
+    // 🔄 Redirect to frontend with teamId
     const frontendUrl = process.env.REACT_APP_FRONTEND_BASE_URL || "http://localhost:3000";
-    res.redirect(`${frontendUrl}?connected=true`);
+    res.redirect(`${frontendUrl}?teamId=${team.id}`);
   } catch (err: any) {
     console.error("❌ Slack OAuth exception:", err.response?.data || err.message);
     res.status(500).send("OAuth failed");
