@@ -95,8 +95,7 @@ On your first visit, you’ll be greeted with a clean interface displaying a “
 Click this button to initiate the Slack OAuth flow.
 You’ll be redirected to Slack to choose your workspace and authorize the app.
 
-
-<img width="1267" height="823" alt="Screenshot 2025-08-07 190229" src="https://github.com/user-attachments/assets/de7a810e-5c7c-4590-94ae-b0c030a69a96" />
+<img width="1267" height="823" alt="Screenshot 2025-08-07 190229" src="https://github.com/user-attachments/assets/87947d87-5c76-4f99-8c87-70ca85b06089" />
 
 After successful authentication, you’ll return to your app with a message:
 
@@ -123,7 +122,8 @@ Action	Description
 | 📤 Click Send Message     | Click the “Send Message” button to schedule or instantly send the message                                     |
 | 📋 View Scheduled Messages   | Scroll down to see all scheduled messages with their statuses           |
 
-<img width="1134" height="912" alt="Screenshot 2025-08-07 190417" src="https://github.com/user-attachments/assets/f46689c1-ffa7-4791-b43d-a396c32a92cc" />
+<img width="1134" height="912" alt="Screenshot 2025-08-07 190417" src="https://github.com/user-attachments/assets/214e775c-d983-41a5-aae3-75cb15850b4f" />
+
 
 ## 🔄 Step 3: Schedule a Message & View Status
 
@@ -139,7 +139,9 @@ After you've connected your Slack workspace and filled out the Team ID, Channel 
 # ✅ Status: Pending
 Any message scheduled for a future time will show up with a Pending status in the “Scheduled Messages” section.
 
-<img width="1665" height="917" alt="Screenshot 2025-08-07 191014" src="https://github.com/user-attachments/assets/31d1fb1d-67b2-4a4f-a145-0cee6b5465e5" />
+
+<img width="1665" height="917" alt="Screenshot 2025-08-07 191014" src="https://github.com/user-attachments/assets/e4e071ba-58e4-4267-ac26-179c12192e99" />
+
 
 Once the scheduled time is reached:
 
@@ -151,7 +153,7 @@ Once the scheduled time is reached:
 
 # ✅ Status: Sent
 
-<img width="1531" height="908" alt="Screenshot 2025-08-07 191157" src="https://github.com/user-attachments/assets/76e2fec7-2cfc-44df-980d-ea6c5d2cb7ed" />
+<img width="1531" height="908" alt="Screenshot 2025-08-07 191157" src="https://github.com/user-attachments/assets/ea210ba8-2ef2-4358-87e0-3ccf3f7c1698" />
 
 ## ❌ Step 5: Cancel a Scheduled Message Before It Sends
 
@@ -166,7 +168,8 @@ Sometimes plans change — and so should your messages.
 # 🚫 Status: Cancelled
 Cancelled messages are no longer in the queue and are not sent.
 
-<img width="1385" height="896" alt="Screenshot 2025-08-07 191832" src="https://github.com/user-attachments/assets/4b81faf6-ef30-4539-afb4-2e1748030ad1" />
+<img width="1385" height="896" alt="Screenshot 2025-08-07 191832" src="https://github.com/user-attachments/assets/693762bc-4b72-4fff-8f89-a5e259ca4c72" />
+
 
 ❌  Cancel a Scheduled Message
 
@@ -175,8 +178,7 @@ Cancelled messages are no longer in the queue and are not sent.
 |-------------|--------------------------------------------------------|
 | ⏳ Before Cancel |	The message appears in the Scheduled Messages list with status Pending.           |
 | ❌ After Cancel  | After clicking the Cancel/Delete button, the message disappears or shows status Cancelled.                    |
-
-<img width="1387" height="876" alt="Screenshot 2025-08-07 191851" src="https://github.com/user-attachments/assets/eed8afc7-9fb9-49ed-80d3-964995ec4498" />
+<img width="1387" height="876" alt="Screenshot 2025-08-07 191851" src="https://github.com/user-attachments/assets/cb75dda5-52e3-40d3-935d-4cb55c55d0d6" />
 
 ✅ The message will no longer be sent to Slack.
 
@@ -187,8 +189,7 @@ Cancelled messages are no longer in the queue and are not sent.
 | ✅ Open Slack |	Go to your connected Slack workspace or channel.           |
 | 👀 View Message  |The message you scheduled will be visible like any other message.                     |
 | 🔄 Real-Time Sync | Everything is reflected both on your app and Slack with real-time accuracy.                          |
-
-<img width="1856" height="923" alt="Screenshot 2025-08-07 191950" src="https://github.com/user-attachments/assets/0965ebd4-180f-4c60-8d84-de130844b210" />
+<img width="1856" height="923" alt="Screenshot 2025-08-07 191950" src="https://github.com/user-attachments/assets/bd720fb3-fd1a-4508-8afd-702e7c18a7cd" />
 
 # ♻️ Step 7: Token Handling & Message Persistence
 
