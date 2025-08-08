@@ -10,27 +10,13 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-  // Step 1: Get teamId from URL after OAuth
   const params = new URLSearchParams(window.location.search);
-  const teamIdFromUrl = params.get("teamId");
+  const teamId = params.get("team_id");
 
-  if (teamIdFromUrl) {
-    localStorage.setItem("teamId", teamIdFromUrl);
-    window.history.replaceState({}, document.title, "/"); // clean up URL
-  }
-
-  // Step 2: Get stored teamId
-  const storedTeamId = localStorage.getItem("teamId");
-
-  // Step 3: Call backend with specific teamId
-  if (storedTeamId) {
-    axios
-      .get(`${API_BASE_URL}/check-auth?teamId=${storedTeamId}`)
-      .then((res) => setIsConnected(res.data.connected))
-      .catch(() => setIsConnected(false));
-  } else {
-    setIsConnected(false);
-  }
+  axios
+    .get(`${API_BASE_URL}/check-auth`, { params: { teamId } })
+    .then((res) => setIsConnected(res.data.connected))
+    .catch(() => setIsConnected(false));
 }, [window.location.search]);
 
 const handleConnect = () => {
