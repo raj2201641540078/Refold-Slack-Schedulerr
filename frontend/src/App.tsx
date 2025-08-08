@@ -10,11 +10,11 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/check-auth`)
-      .then((res) => setIsConnected(res.data.connected))
-      .catch(() => setIsConnected(false));
-  }, []);
+  axios
+    .get(`${API_BASE_URL}/check-auth`)
+    .then((res) => setIsConnected(res.data.connected))
+    .catch(() => setIsConnected(false));
+}, [window.location.search]);
 
   const handleConnect = () => {
     window.location.href = `${API_BASE_URL}/oauth`;

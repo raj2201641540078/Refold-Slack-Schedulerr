@@ -77,7 +77,7 @@ export const handleOAuthCallback = async (req: Request, res: Response) => {
 
     // ✅ Redirect directly to frontend home
     const frontendUrl = process.env.REACT_APP_FRONTEND_BASE_URL || "http://localhost:3000";
-    res.redirect(frontendUrl);
+    res.redirect(`${frontendUrl}?connected=true`);
   } catch (err: any) {
     console.error("❌ Slack OAuth exception:", err.response?.data || err.message);
     res.status(500).send("OAuth failed");
